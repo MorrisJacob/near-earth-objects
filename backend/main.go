@@ -13,13 +13,20 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
-const (
-	nasaAPIKey = "pdkwwOmrwfdkqeJW31ohOEb6TGQHqqIfLe1SUeTc"
-	port       = ":7777"
-)
+const nasaAPIKey = "pdkwwOmrwfdkqeJW31ohOEb6TGQHqqIfLe1SUeTc"
+
+// port reads the PORT env var injected by Railway (and similar platforms).
+// Falls back to 7777 for local development.
+func port() string {
+	if p := os.Getenv("PORT"); p != "" {
+		return ":" + p
+	}
+	return ":7777"
+}
 
 // nasaBaseURL is a var rather than a const so tests can redirect requests to
 // an httptest.Server without spawning a real internet connection.
@@ -253,8 +260,9 @@ func newMux() *http.ServeMux {
 }
 
 func main() {
-	log.Printf("NEO Tracker backend running on %s", port)
-	if err := http.ListenAndServe(port, newMux()); err != nil {
+	addr := port()
+	log.Printf("NEO Tracker backend running on %s", addr)
+	if err := http.ListenAndServe(addr, newMux()); err != nil {
 		log.Fatal(err)
 	}
 }
