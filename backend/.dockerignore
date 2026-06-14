@@ -1,0 +1,6 @@
+# Compiled binaries — not needed in the Docker build context
+neo-tracker
+neo-tracker-server
+
+# Test files aren't needed in the image
+*_test.go

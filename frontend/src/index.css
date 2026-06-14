@@ -1,0 +1,49 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #020408;
+  --bg2: #060c14;
+  --surface: rgba(10, 18, 35, 0.85);
+  --surface2: rgba(15, 25, 50, 0.9);
+  --border: rgba(100, 140, 255, 0.12);
+  --border-bright: rgba(130, 160, 255, 0.3);
+  --text: #c8d4e8;
+  --text-dim: #6b7a96;
+  --text-bright: #e8f0ff;
+  --accent: #4f7cff;
+  --accent2: #a855f7;
+  --accent3: #06b6d4;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --safe: #10b981;
+  --glow-blue: rgba(79, 124, 255, 0.15);
+  --glow-purple: rgba(168, 85, 247, 0.12);
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 3px;
+}

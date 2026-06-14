@@ -1,0 +1,89 @@
+name: CI / CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Run all tests ────────────────────────────────────────────────────────────
+  # This job runs on every push and every pull request.
+  # The deploy job below only runs when this one passes.
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Go tests
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+
+      - name: Run Go tests
+        working-directory: backend
+        run: go test ./...
+
+      # Frontend tests
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run frontend tests
+        working-directory: frontend
+        run: npm test -- --run
+
+  # ── Deploy frontend to Bluehost ──────────────────────────────────────────────
+  # Runs only on a push to main (not on pull requests) and only after tests pass.
+  # Required GitHub secrets:
+  #   FTP_SERVER   — your Bluehost FTP hostname (e.g. ftp.yourdomain.com)
+  #   FTP_USERNAME — your Bluehost FTP username
+  #   FTP_PASSWORD — your Bluehost FTP password
+  #   VITE_API_BASE — full URL of your Railway backend (e.g. https://your-app.up.railway.app/api)
+  deploy-frontend:
+    name: Deploy Frontend → Bluehost
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: frontend
+        env:
+          # Injected at build time so the compiled JS bundle points at Railway.
+          VITE_API_BASE: ${{ secrets.VITE_API_BASE }}
+        run: npm run build
+
+      - name: Upload to Bluehost via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./frontend/dist/
+          # Adjust server-dir if your site lives in a subdirectory,
+          # e.g. /public_html/neo/ if you want yourdomain.com/neo/
+          server-dir: /public_html/
