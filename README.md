@@ -1,8 +1,10 @@
+# https://morrisprogramming.com/NearEarth/
+
 # NEO Tracker
 
 A real-time dashboard for tracking Near-Earth Objects (asteroids) using NASA's NeoWS API. Because apparently keeping tabs on giant space rocks hurtling toward our planet is something humans now do for fun.
 
-Live: **[Frontend on Bluehost](https://gdmseeds.com/NearEarth/)** · **[Backend on Railway](https://get-going-production.up.railway.app)**
+Live: **[Frontend on Bluehost](https://morrisprogramming.com/NearEarth/)** · **[Backend on Railway](https://get-going-production.up.railway.app)**
 
 ---
 
