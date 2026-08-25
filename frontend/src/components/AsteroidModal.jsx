@@ -7,6 +7,8 @@ function fmt(n, decimals = 0) {
 
 export default function AsteroidModal({ neo, onClose }) {
   useEffect(() => {
+    // Attach the keyboard listener only while the modal is mounted and remove
+    // it on close so repeated openings do not accumulate handlers.
     function onKey(e) { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)

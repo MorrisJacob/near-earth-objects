@@ -2,6 +2,7 @@
 set -e
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
+# Homebrew installs Go outside PATH on the macOS machine this helper targets.
 GO=/opt/homebrew/bin/go
 
 echo "Building NEO Tracker backend..."
@@ -22,5 +23,6 @@ echo "  Open: http://localhost:5174"
 echo ""
 echo "Press Ctrl+C to stop."
 
+# Forward termination to both child processes so neither dev server is orphaned.
 trap "kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit 0" INT TERM
 wait

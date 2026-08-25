@@ -43,6 +43,8 @@ export default function App() {
   }
 
   function applyFilters() {
+    // Work on a copy because Array.sort mutates its receiver and neos is React
+    // state shared by the statistics and both view modes.
     let list = [...neos]
     if (filter === 'hazardous') list = list.filter(n => n.is_potentially_hazardous)
     if (filter === 'safe') list = list.filter(n => !n.is_potentially_hazardous)
@@ -53,6 +55,8 @@ export default function App() {
     setFiltered(list)
   }
 
+  // Summary statistics intentionally use the complete feed, not the filtered
+  // list, so changing the grid controls does not change the dashboard totals.
   const hazardCount = neos.filter(n => n.is_potentially_hazardous).length
   const closestNEO = neos.length ? [...neos].sort((a, b) => a.miss_distance_km - b.miss_distance_km)[0] : null
 

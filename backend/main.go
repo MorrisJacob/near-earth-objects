@@ -109,6 +109,8 @@ type NEO struct {
 }
 
 type NEOResponse struct {
+	// Dates are retained for API compatibility even though transformNEOs only
+	// receives the date-keyed object map and currently leaves them empty.
 	StartDate    string `json:"start_date"`
 	EndDate      string `json:"end_date"`
 	TotalObjects int    `json:"total_objects"`
@@ -244,6 +246,8 @@ func neoLookupHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
+	// Keep this handler independent of NASA so the liveness probe reports the
+	// health of this process rather than the availability of an upstream API.
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
 }
@@ -253,6 +257,8 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 // starting a real TCP listener.
 func newMux() *http.ServeMux {
 	mux := http.NewServeMux()
+	// Register the exact feed path before the subtree lookup route. ServeMux
+	// selects the most-specific pattern, keeping "feed" out of the ID handler.
 	mux.HandleFunc("/api/neo/feed", corsMiddleware(neoFeedHandler))
 	mux.HandleFunc("/api/neo/", corsMiddleware(neoLookupHandler))
 	mux.HandleFunc("/health", corsMiddleware(healthHandler))
@@ -262,6 +268,8 @@ func newMux() *http.ServeMux {
 func main() {
 	addr := port()
 	log.Printf("NEO Tracker backend running on %s", addr)
+	// ListenAndServe only returns on startup failure or after the server stops,
+	// either of which should terminate the container with a non-zero status.
 	if err := http.ListenAndServe(addr, newMux()); err != nil {
 		log.Fatal(err)
 	}
