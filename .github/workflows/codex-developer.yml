@@ -173,6 +173,6 @@ jobs:
             "title": "$ISSUE_TITLE",
             "head": "$BRANCH",
             "base": "main",
-            "body": "Closes #$ISSUE_NUMBER\n\n## Changes\n\nImplemented by Codex.\n\nThis PR was automatically created after the Codex implementation completed."
+            "body": "Closes #$ISSUE_NUMBER"
           }
           EOF
