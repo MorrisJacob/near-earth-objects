@@ -84,27 +84,77 @@ jobs:
             - Keep the changes focused on this issue.
             - Add or update tests where appropriate.
             - Do not modify unrelated functionality.
+            - Do not modify GitHub Actions workflows.
 
             Before finishing:
             - Run the relevant tests.
             - Fix failures caused by your changes.
             - Review your own changes for obvious bugs.
-            - Stage all appropriate changes.
-            - Commit the changes to the current branch.
-            - Push the commit to the current branch.
+            - Leave all appropriate changes in the working tree.
 
-            Do not modify GitHub Actions workflows.
+            IMPORTANT:
+            - Do NOT stage changes.
+            - Do NOT commit changes.
+            - Do NOT push changes.
+            - Do NOT modify GitHub Actions workflows.
 
-            After the commit has been pushed successfully, your task is complete.
-            Do not continue investigating, refactoring, or making additional changes.
+            After the code changes and tests are complete, stop.
 
             Return a brief final summary containing:
             - What you changed
             - Tests/checks performed
-            - Commit SHA
-            - Push status
+            - Any remaining issues or blocked tests
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No changes detected."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Changes detected."
+            git status --short
+          fi
+
+      - name: Commit changes
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          ISSUE_TITLE: ${{ inputs.issue_title }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add .
+
+          git commit \
+            -m "$ISSUE_TITLE" \
+            -m "Implemented automatically by Codex."
+
+      - name: Push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          BRANCH: ${{ inputs.branch }}
+        run: |
+          for attempt in 1 2 3 4 5; do
+            echo "Push attempt $attempt of 5..."
+
+            if git push origin "HEAD:$BRANCH"; then
+              echo "Push succeeded."
+              exit 0
+            fi
+
+            if [ "$attempt" -lt 5 ]; then
+              echo "Push failed. Retrying in 15 seconds..."
+              sleep 15
+            fi
+          done
+
+          echo "Push failed after 5 attempts."
+          exit 1
 
       - name: Create pull request
+        if: steps.changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ inputs.branch }}
@@ -113,7 +163,7 @@ jobs:
         run: |
           curl --fail-with-body \
             --request POST \
-            --url https://api.github.com/repos/${{ github.repository }}/pulls \
+            --url "https://api.github.com/repos/${{ github.repository }}/pulls" \
             --header "Accept: application/vnd.github+json" \
             --header "Authorization: Bearer $GH_TOKEN" \
             --header "X-GitHub-Api-Version: 2022-11-28" \
