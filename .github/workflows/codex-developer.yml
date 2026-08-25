@@ -38,11 +38,13 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Run Codex
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          sandbox: danger-full-access
           prompt: |
             You are the software engineer working on this repository.
 
@@ -60,7 +62,7 @@ jobs:
             Branch:
             ${{ inputs.branch }}
 
-            Implement this issue completely.
+            Your task is to implement this issue completely.
 
             Before coding:
             - Inspect the repository.
@@ -71,15 +73,21 @@ jobs:
             - Follow existing coding conventions.
             - Keep the changes focused on this issue.
             - Add or update tests where appropriate.
+            - Do not modify unrelated functionality.
 
             Before finishing:
             - Run the relevant tests.
             - Fix failures caused by your changes.
             - Review your own changes for obvious bugs.
+            - Stage all appropriate changes.
             - Commit the changes to the current branch.
             - Push the commit to the current branch.
 
-            Do not modify unrelated functionality.
             Do not modify GitHub Actions workflows.
 
-            Finally, summarize what you changed and what tests passed.
+            Finally, summarize:
+            - What you changed
+            - What files were modified
+            - What tests/checks you ran
+            - Whether they passed or failed
+            - The commit SHA
