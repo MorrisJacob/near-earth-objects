@@ -22,6 +22,7 @@ describe('StatsBar', () => {
 
   it('renders hazardous count', () => {
     render(<StatsBar total={39} hazardous={3} closest={closestNEO} loading={false} />)
+    expect(screen.getByText('Potentially Hazardous Objects')).toBeInTheDocument()
     expect(screen.getByText('3')).toBeInTheDocument()
   })
 

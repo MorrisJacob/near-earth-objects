@@ -15,7 +15,7 @@ export default function StatsBar({ total, hazardous, closest, loading }) {
       </div>
 
       <div className="stat-card danger">
-        <div className="stat-label">Potentially Hazardous</div>
+        <div className="stat-label">Potentially Hazardous Objects</div>
         <div className="stat-value danger">{loading ? '—' : hazardous}</div>
         <div className="stat-sub">{loading || !total ? '' : `${Math.round(hazardous/total*100)}% of tracked`}</div>
       </div>
