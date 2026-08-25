@@ -1,4 +1,4 @@
-export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefresh, loading, count, view, setView }) {
+export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefresh, onExport, loading, count, view, setView }) {
   return (
     <div className="filter-bar">
       {/* View toggle */}
@@ -54,6 +54,13 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
       </select>
 
       <span className="count-badge">{count} objects</span>
+
+      <button className="export-btn" onClick={onExport} disabled={loading || count === 0}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+        </svg>
+        Export CSV
+      </button>
 
       <button className="refresh-btn" onClick={onRefresh} disabled={loading}>
         <svg

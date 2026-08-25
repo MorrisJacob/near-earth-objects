@@ -190,8 +190,7 @@
 
 .sort-select:hover, .sort-select:focus { border-color: var(--border-bright); }
 
-.refresh-btn {
-  margin-left: auto;
+.refresh-btn, .export-btn {
   padding: 8px 16px;
   background: rgba(79,124,255,0.1);
   border: 1px solid rgba(79,124,255,0.3);
@@ -207,6 +206,20 @@
   align-items: center;
   gap: 6px;
 }
+
+.export-btn {
+  margin-left: auto;
+  background: rgba(16,185,129,0.1);
+  border-color: rgba(16,185,129,0.3);
+  color: #6ee7b7;
+}
+
+.export-btn:hover:not(:disabled) {
+  background: rgba(16,185,129,0.2);
+  border-color: rgba(16,185,129,0.5);
+}
+
+.export-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .refresh-btn:hover:not(:disabled) {
   background: rgba(79,124,255,0.2);
