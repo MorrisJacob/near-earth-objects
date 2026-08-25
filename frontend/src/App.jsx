@@ -5,6 +5,7 @@ import StatsBar from './components/StatsBar'
 import FilterBar from './components/FilterBar'
 import AsteroidModal from './components/AsteroidModal'
 import SpaceView3D from './components/SpaceView3D'
+import { downloadObjectsCsv } from './utils/csv'
 import './App.css'
 
 // In production VITE_API_BASE is set to the Railway backend URL via GitHub
@@ -92,6 +93,7 @@ export default function App() {
           onRefresh={fetchNEOs} loading={loading}
           count={filtered.length}
           view={view} setView={setView}
+          onExport={() => downloadObjectsCsv(filtered)}
         />
 
         {loading && (

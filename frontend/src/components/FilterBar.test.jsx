@@ -11,6 +11,7 @@ function setup(overrides = {}) {
     sortBy: 'date',
     setSortBy: vi.fn(),
     onRefresh: vi.fn(),
+    onExport: vi.fn(),
     loading: false,
     count: 12,
     view: 'grid',
@@ -72,6 +73,20 @@ describe('FilterBar', () => {
   it('disables refresh button while loading', () => {
     setup({ loading: true })
     expect(screen.getByRole('button', { name: /refresh/i })).toBeDisabled()
+  })
+
+  it('calls onExport when the CSV export button is clicked', async () => {
+    const { onExport } = setup()
+    await userEvent.click(screen.getByRole('button', { name: /export csv/i }))
+    expect(onExport).toHaveBeenCalledOnce()
+  })
+
+  it.each([
+    ['loading', { loading: true }],
+    ['there are no objects', { count: 0 }],
+  ])('disables CSV export while %s', (_condition, overrides) => {
+    setup(overrides)
+    expect(screen.getByRole('button', { name: /export csv/i })).toBeDisabled()
   })
 
   it('displays the object count badge', () => {
