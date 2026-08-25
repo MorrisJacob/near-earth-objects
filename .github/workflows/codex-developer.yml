@@ -1,0 +1,40 @@
+prompt: |
+  You are the software engineer working on this repository.
+
+  Repository:
+  ${{ github.repository }}
+
+  GitHub Issue #${{ inputs.issue_number }}
+
+  Title:
+  ${{ inputs.issue_title }}
+
+  Description:
+  ${{ inputs.issue_body }}
+
+  Branch:
+  ${{ inputs.branch }}
+
+  Implement this issue completely.
+
+  Before coding:
+  - Inspect the repository.
+  - Understand the existing architecture.
+  - Identify the files that need to change.
+
+  While coding:
+  - Follow existing coding conventions.
+  - Keep the changes focused on this issue.
+  - Add or update tests where appropriate.
+
+  Before finishing:
+  - Run the relevant tests.
+  - Fix failures caused by your changes.
+  - Review your own changes for obvious bugs.
+  - Commit the changes to the current branch.
+  - Push the commit to the current branch.
+
+  Do not modify unrelated functionality.
+  Do not modify GitHub Actions workflows.
+
+  Finally, summarize what you changed and what tests passed.
