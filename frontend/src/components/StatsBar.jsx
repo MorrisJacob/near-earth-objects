@@ -1,5 +1,6 @@
 export default function StatsBar({ total, hazardous, closest, loading }) {
   function fmtDist(km) {
+    // Use a compact suffix for large values so the stat card does not wrap.
     if (!km) return '—'
     if (km > 1e6) return `${(km / 1e6).toFixed(2)}M km`
     return `${Math.round(km).toLocaleString()} km`
@@ -21,6 +22,7 @@ export default function StatsBar({ total, hazardous, closest, loading }) {
 
       <div className="stat-card purple">
         <div className="stat-label">Safe Approaches</div>
+        {/* Safe approaches are derived from the mutually exclusive NASA flag. */}
         <div className="stat-value purple">{loading ? '—' : total - hazardous}</div>
         <div className="stat-sub">Non-hazardous</div>
       </div>

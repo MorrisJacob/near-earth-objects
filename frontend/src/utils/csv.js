@@ -1,3 +1,5 @@
+// Keep headings and object keys together so column order cannot drift between
+// the header and data rows when fields are added.
 const columns = [
   ['ID', 'id'],
   ['Name', 'name'],
@@ -15,6 +17,8 @@ const columns = [
 ]
 
 function escapeCsvValue(value) {
+  // Quoting every field handles commas and line breaks; doubled quotes are the
+  // RFC 4180 escape sequence understood by spreadsheet applications.
   const text = value == null ? '' : String(value)
   return `"${text.replaceAll('"', '""')}"`
 }
@@ -28,6 +32,8 @@ export function objectsToCsv(objects) {
 }
 
 export function downloadObjectsCsv(objects) {
+  // A UTF-8 BOM helps Excel detect the encoding instead of interpreting names
+  // with non-ASCII characters using the system legacy code page.
   const blob = new Blob(['\uFEFF', objectsToCsv(objects)], { type: 'text/csv;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
@@ -36,5 +42,7 @@ export function downloadObjectsCsv(objects) {
   document.body.appendChild(link)
   link.click()
   link.remove()
+  // Object URLs retain the Blob until revoked, so release it after the browser
+  // has received the synthetic click.
   URL.revokeObjectURL(url)
 }

@@ -9,6 +9,8 @@ export default function StarField() {
     let animId
 
     function resize() {
+      // Assigning canvas dimensions also clears its backing buffer; the next
+      // animation frame redraws the full background at the new viewport size.
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
     }
@@ -19,6 +21,8 @@ export default function StarField() {
     const STAR_COUNT = 180
     const NEBULA_COUNT = 4
 
+    // Generate the field once per mount. Keeping these coordinates stable
+    // prevents stars from jumping to new positions on every animation frame.
     const stars = Array.from({ length: STAR_COUNT }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -67,6 +71,7 @@ export default function StarField() {
     draw()
 
     return () => {
+      // Both resources outlive a render unless explicitly released.
       cancelAnimationFrame(animId)
       window.removeEventListener('resize', resize)
     }

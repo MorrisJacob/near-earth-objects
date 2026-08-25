@@ -1,4 +1,5 @@
 function fmtKm(km) {
+  // Compact values keep distances readable within the fixed-width card.
   if (!km) return '—'
   if (km >= 1e6) return `${(km / 1e6).toFixed(2)}M`
   if (km >= 1e3) return `${(km / 1e3).toFixed(0)}K`
@@ -13,6 +14,8 @@ function distancePercent(km) {
 }
 
 function distClass(km) {
+  // These thresholds control urgency colours only; NASA's hazardous flag is
+  // the authoritative classification displayed by the badge.
   if (km < 500_000) return 'close'
   if (km < 2_000_000) return 'medium'
   return ''
@@ -22,6 +25,8 @@ export default function AsteroidCard({ neo, index, onClick }) {
   const pct = distancePercent(neo.miss_distance_km)
   const dc = distClass(neo.miss_distance_km)
 
+  // NeoWS supplies a diameter range, so the UI uses its midpoint as a concise
+  // representative size rather than implying either bound is exact.
   const diamAvg = ((neo.est_diameter_min_km + neo.est_diameter_max_km) / 2)
   const diamStr = diamAvg < 1
     ? `${Math.round(diamAvg * 1000)} m`

@@ -40,6 +40,8 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
         ))}
       </div>
 
+      {/* Object positions in the 3D scene are derived from IDs and distance,
+          so list ordering has no visual meaning outside the grid view. */}
       <select
         className="sort-select"
         value={sortBy}
