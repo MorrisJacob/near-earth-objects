@@ -31,6 +31,7 @@ permissions:
 jobs:
   codex:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout feature branch
@@ -41,12 +42,21 @@ jobs:
           persist-credentials: true
 
       - name: Run Codex
+        id: run_codex
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          sandbox: danger-full-access
+          permission-profile: ":workspace"
+
           prompt: |
             You are the software engineer working on this repository.
+
+            This is an unattended automated workflow.
+            There is no human available to answer questions or approve actions.
+
+            Do not ask for clarification or wait for user input.
+            Make reasonable engineering decisions yourself.
+            If something cannot be completed, explain the problem and exit.
 
             Repository:
             ${{ github.repository }}
@@ -85,9 +95,31 @@ jobs:
 
             Do not modify GitHub Actions workflows.
 
-            Finally, summarize:
+            After the commit has been pushed successfully, your task is complete.
+            Do not continue investigating, refactoring, or making additional changes.
+
+            Return a brief final summary containing:
             - What you changed
-            - What files were modified
-            - What tests/checks you ran
-            - Whether they passed or failed
-            - The commit SHA
+            - Tests/checks performed
+            - Commit SHA
+            - Push status
+
+      - name: Create pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ inputs.branch }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          ISSUE_TITLE: ${{ inputs.issue_title }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "$ISSUE_TITLE" \
+            --body "Closes #$ISSUE_NUMBER
+
+            ## Changes
+
+            Implemented by Codex.
+
+            This PR was automatically created after the Codex implementation completed."
+
