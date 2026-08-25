@@ -111,15 +111,18 @@ jobs:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           ISSUE_TITLE: ${{ inputs.issue_title }}
         run: |
-          gh pr create \
-            --base main \
-            --head "$BRANCH" \
-            --title "$ISSUE_TITLE" \
-            --body "Closes #$ISSUE_NUMBER
-
-            ## Changes
-
-            Implemented by Codex.
-
-            This PR was automatically created after the Codex implementation completed."
-
+          curl --fail-with-body \
+            --request POST \
+            --url https://api.github.com/repos/${{ github.repository }}/pulls \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            --header "Content-Type: application/json" \
+            --data @- <<EOF
+          {
+            "title": "$ISSUE_TITLE",
+            "head": "$BRANCH",
+            "base": "main",
+            "body": "Closes #$ISSUE_NUMBER\n\n## Changes\n\nImplemented by Codex.\n\nThis PR was automatically created after the Codex implementation completed."
+          }
+          EOF
