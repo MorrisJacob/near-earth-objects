@@ -1,40 +1,85 @@
-prompt: |
-  You are the software engineer working on this repository.
+name: Codex Developer
 
-  Repository:
-  ${{ github.repository }}
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch for Codex to work on"
+        required: true
+        type: string
 
-  GitHub Issue #${{ inputs.issue_number }}
+      issue_number:
+        description: "GitHub issue number"
+        required: true
+        type: string
 
-  Title:
-  ${{ inputs.issue_title }}
+      issue_title:
+        description: "GitHub issue title"
+        required: true
+        type: string
 
-  Description:
-  ${{ inputs.issue_body }}
+      issue_body:
+        description: "GitHub issue description"
+        required: true
+        type: string
 
-  Branch:
-  ${{ inputs.branch }}
+permissions:
+  contents: write
+  issues: read
+  pull-requests: write
 
-  Implement this issue completely.
+jobs:
+  codex:
+    runs-on: ubuntu-latest
 
-  Before coding:
-  - Inspect the repository.
-  - Understand the existing architecture.
-  - Identify the files that need to change.
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
 
-  While coding:
-  - Follow existing coding conventions.
-  - Keep the changes focused on this issue.
-  - Add or update tests where appropriate.
+      - name: Run Codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: |
+            You are the software engineer working on this repository.
 
-  Before finishing:
-  - Run the relevant tests.
-  - Fix failures caused by your changes.
-  - Review your own changes for obvious bugs.
-  - Commit the changes to the current branch.
-  - Push the commit to the current branch.
+            Repository:
+            ${{ github.repository }}
 
-  Do not modify unrelated functionality.
-  Do not modify GitHub Actions workflows.
+            GitHub Issue #${{ inputs.issue_number }}
 
-  Finally, summarize what you changed and what tests passed.
+            Title:
+            ${{ inputs.issue_title }}
+
+            Description:
+            ${{ inputs.issue_body }}
+
+            Branch:
+            ${{ inputs.branch }}
+
+            Implement this issue completely.
+
+            Before coding:
+            - Inspect the repository.
+            - Understand the existing architecture.
+            - Identify the files that need to change.
+
+            While coding:
+            - Follow existing coding conventions.
+            - Keep the changes focused on this issue.
+            - Add or update tests where appropriate.
+
+            Before finishing:
+            - Run the relevant tests.
+            - Fix failures caused by your changes.
+            - Review your own changes for obvious bugs.
+            - Commit the changes to the current branch.
+            - Push the commit to the current branch.
+
+            Do not modify unrelated functionality.
+            Do not modify GitHub Actions workflows.
+
+            Finally, summarize what you changed and what tests passed.
