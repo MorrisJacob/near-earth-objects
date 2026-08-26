@@ -82,7 +82,7 @@ export default function App() {
               </svg>
             </div>
             <div>
-              <h1 className="title">NEAR EARTH OBJECTS</h1>
+              <h1 className="title">OUTER SPACE</h1>
               <p className="subtitle">Real-time asteroid tracking &bull; NASA NeoWS</p>
             </div>
           </div>
