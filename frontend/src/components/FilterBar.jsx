@@ -32,7 +32,7 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
         {[['all','All'], ['hazardous','Hazardous'], ['safe','Safe']].map(([val, label]) => (
           <button
             key={val}
-            className={`filter-btn${filter === val ? ' active' : ''}${val === 'hazardous' ? ' danger' : ''}`}
+            className={`filter-btn${filter === val ? ' active' : ''}${val === 'hazardous' ? ' danger' : ''}${val === 'safe' ? ' safe' : ''}`}
             onClick={() => setFilter(val)}
           >
             {label}

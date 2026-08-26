@@ -42,6 +42,11 @@ describe('FilterBar', () => {
     expect(setFilter).toHaveBeenCalledWith('safe')
   })
 
+  it('applies the safe styling hook to the Safe filter button', () => {
+    setup()
+    expect(screen.getByRole('button', { name: /safe/i })).toHaveClass('safe')
+  })
+
   it('calls setFilter with "all" when All button is clicked', async () => {
     const { setFilter } = setup({ filter: 'hazardous' })
     await userEvent.click(screen.getByRole('button', { name: /^all$/i }))
