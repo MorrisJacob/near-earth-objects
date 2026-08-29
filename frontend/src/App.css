@@ -168,6 +168,7 @@
 .filter-btn:last-child { border-right: none; }
 
 .filter-btn:hover { color: var(--text-bright); background: rgba(79,124,255,0.08); }
+.filter-btn.safe:hover { background: rgba(16,185,129,0.12); }
 .filter-btn.active {
   background: rgba(79,124,255,0.15);
   color: #a5b8ff;
