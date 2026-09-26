@@ -93,3 +93,15 @@ describe('AsteroidModal', () => {
     expect(screen.getByText('Close Approach Data')).toBeInTheDocument()
   })
 })
+
+it('keeps keyboard focus inside the dialog when a NASA link is available', async () => {
+  const user = userEvent.setup()
+  render(<AsteroidModal neo={neo} onClose={vi.fn()} />)
+  const close = screen.getByRole('button', { name: 'Close asteroid details' })
+  const nasa = screen.getByRole('link', { name: /nasa jpl/i })
+  expect(close).toHaveFocus()
+  await user.tab({ shift: true })
+  expect(nasa).toHaveFocus()
+  await user.tab()
+  expect(close).toHaveFocus()
+})

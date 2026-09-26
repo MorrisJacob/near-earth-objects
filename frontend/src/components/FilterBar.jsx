@@ -1,10 +1,15 @@
-export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefresh, onExport, loading, count, view, setView }) {
+export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefresh, onExport, loading, count, view, setView, query = '', setQuery }) {
   return (
     <div className="filter-bar">
+      <label className="search-field">
+        Search asteroids
+        <input type="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="Name or NEO ID" />
+      </label>
       {/* View toggle */}
-      <div className="filter-group view-toggle">
+      <div className="filter-group view-toggle" role="group" aria-label="View">
         <button
           className={`filter-btn${view === 'grid' ? ' active' : ''}`}
+          aria-pressed={view === 'grid'}
           onClick={() => setView('grid')}
           title="Card grid view"
         >
@@ -16,6 +21,7 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
         </button>
         <button
           className={`filter-btn${view === '3d' ? ' active view-3d' : ''}`}
+          aria-pressed={view === '3d'}
           onClick={() => setView('3d')}
           title="3D space view"
         >
@@ -28,11 +34,12 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
         </button>
       </div>
 
-      <div className="filter-group">
+      <div className="filter-group" role="group" aria-label="Classification">
         {[['all','All'], ['hazardous','Hazardous'], ['safe','Safe']].map(([val, label]) => (
           <button
             key={val}
             className={`filter-btn${filter === val ? ' active' : ''}${val === 'hazardous' ? ' danger' : ''}${val === 'safe' ? ' safe' : ''}`}
+            aria-pressed={filter === val}
             onClick={() => setFilter(val)}
           >
             {label}
@@ -44,6 +51,7 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
           so list ordering has no visual meaning outside the grid view. */}
       <select
         className="sort-select"
+        aria-label="Sort asteroids"
         value={sortBy}
         onChange={e => setSortBy(e.target.value)}
         disabled={view === '3d'}
@@ -55,7 +63,7 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
         <option value="speed">Sort: Speed</option>
       </select>
 
-      <span className="count-badge">{count} objects</span>
+      <span className="count-badge" role="status">{loading ? 'Loading objects…' : `${count} objects`}</span>
 
       <button className="export-btn" onClick={onExport} disabled={loading || count === 0}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import StarField from './components/StarField'
 import AsteroidCard from './components/AsteroidCard'
 import StatsBar from './components/StatsBar'
@@ -14,7 +14,6 @@ const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:7777/api'
 
 export default function App() {
   const [neos, setNeos] = useState([])        // full list from the API
-  const [filtered, setFiltered] = useState([]) // list after filter + sort applied
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selected, setSelected] = useState(null) // asteroid open in the detail modal
@@ -23,8 +22,9 @@ export default function App() {
   const [totalObjects, setTotalObjects] = useState(0) // raw count from the API (before client filter)
   const [view, setView] = useState('grid')       // 'grid' | '3d'
 
+  const [query, setQuery] = useState('')
+
   useEffect(() => { fetchNEOs() }, [])                    // fetch once on mount
-  useEffect(() => { applyFilters() }, [neos, filter, sortBy]) // re-filter whenever inputs change
 
   async function fetchNEOs() {
     setLoading(true)
@@ -42,7 +42,7 @@ export default function App() {
     }
   }
 
-  function applyFilters() {
+  const filtered = useMemo(() => {
     // Work on a copy because Array.sort mutates its receiver and neos is React
     // state shared by the statistics and both view modes.
     let list = [...neos]
@@ -52,8 +52,9 @@ export default function App() {
     if (sortBy === 'distance') list.sort((a, b) => a.miss_distance_km - b.miss_distance_km)
     if (sortBy === 'size') list.sort((a, b) => b.est_diameter_max_km - a.est_diameter_max_km)
     if (sortBy === 'speed') list.sort((a, b) => b.relative_velocity_kmh - a.relative_velocity_kmh)
-    setFiltered(list)
-  }
+    const search = query.trim().toLowerCase()
+    return list.filter(n => n.name.toLowerCase().includes(search) || String(n.id).includes(search))
+  }, [neos, filter, sortBy, query])
 
   // Summary statistics intentionally use the complete feed, not the filtered
   // list, so changing the grid controls does not change the dashboard totals.
@@ -62,9 +63,15 @@ export default function App() {
 
   return (
     <div className="app">
+      <a className="skip-link" href="#objects">Skip to asteroid explorer</a>
       <StarField />
+      <nav className="site-nav" aria-label="Main navigation">
+        <a href="#overview">Overview</a>
+        <a href="#objects">Asteroid explorer</a>
+        <a href="#guide">Data guide</a>
+      </nav>
 
-      <header className="header">
+      <header className="header" id="overview" tabIndex={-1}>
         <div className="header-glow" />
         <div className="header-content">
           <div className="logo-row">
@@ -86,22 +93,25 @@ export default function App() {
               <p className="subtitle">Real-time asteroid tracking &bull; NASA NeoWS</p>
             </div>
           </div>
-          <StatsBar total={totalObjects} hazardous={hazardCount} closest={closestNEO} loading={loading} />
+          <StatsBar total={totalObjects} hazardous={hazardCount} closest={closestNEO} loading={loading || Boolean(error)} />
         </div>
       </header>
 
-      <main className={`main${view === '3d' ? ' main--3d' : ''}`}>
+      <main id="objects" tabIndex={-1} className={`main${view === '3d' ? ' main--3d' : ''}`}>
+        <h2>Asteroid explorer</h2>
+        <p className="section-intro">Explore upcoming approaches in the next 7 days. Select an asteroid to see its details and NASA record.</p>
         <FilterBar
           filter={filter} setFilter={setFilter}
           sortBy={sortBy} setSortBy={setSortBy}
           onRefresh={fetchNEOs} loading={loading}
-          count={filtered.length}
+          count={error ? 0 : filtered.length}
+          query={query} setQuery={setQuery}
           view={view} setView={setView}
           onExport={() => downloadObjectsCsv(filtered)}
         />
 
         {loading && (
-          <div className="loading-state">
+          <div className="loading-state" role="status">
             <div className="orbit-loader">
               <div className="orbit-ring" />
               <div className="orbit-ring ring2" />
@@ -112,25 +122,48 @@ export default function App() {
         )}
 
         {error && (
-          <div className="error-state">
+          <div className="error-state" role="alert">
             <div className="error-icon">!</div>
             <p>Failed to load data: {error}</p>
             <button className="btn-retry" onClick={fetchNEOs}>Retry</button>
           </div>
         )}
 
-        {!loading && !error && view === 'grid' && (
+        {!loading && !error && filtered.length > 0 && view === 'grid' && (
           <div className="neo-grid">
             {filtered.map((neo, i) => (
               <AsteroidCard key={neo.id} neo={neo} index={i} onClick={() => setSelected(neo)} />
             ))}
-            {filtered.length === 0 && <div className="empty-state"><p>No objects match the current filter.</p></div>}
           </div>
         )}
 
-        {!loading && !error && view === '3d' && (
+        {!loading && !error && filtered.length > 0 && view === '3d' && (
           <SpaceView3D neos={filtered} onSelect={setSelected} />
         )}
+        {!loading && !error && filtered.length === 0 && (
+          <div className="empty-state" role="status">
+            <p>{neos.length ? 'No objects match your search and filter.' : 'No upcoming approaches are available in this feed.'}</p>
+            {(query || filter !== 'all') && (
+              <button className="btn-retry" onClick={() => { setQuery(''); setFilter('all') }}>Clear search and filters</button>
+            )}
+          </div>
+        )}
+
+        <section className="data-guide" id="guide" tabIndex={-1} aria-labelledby="guide-title">
+          <h2 id="guide-title">Data guide</h2>
+          <dl>
+            <dt>Finding an asteroid</dt>
+            <dd>Search by name or NEO ID, filter by classification, and sort the grid by date, distance, size, or speed. Export CSV downloads the current results. Grid view also provides keyboard access to every object's details.</dd>
+            <dt>Miss distance and LD</dt>
+            <dd>Miss distance is the predicted separation at close approach. One lunar distance (LD) is approximately 384,400 km, the average distance between Earth and the Moon.</dd>
+            <dt>Potentially hazardous</dt>
+            <dd>NASA classifies objects using their size and orbit. This label does not mean an impact is predicted. “Safe” identifies objects without that classification.</dd>
+            <dt>About the views</dt>
+            <dd>Summary totals cover the full feed; search and filters affect the results below. The 3D view is an illustration, with compressed distances and illustrative positions, not a precise orbital map.</dd>
+          </dl>
+          <a href="https://cneos.jpl.nasa.gov/about/neo_groups.html" target="_blank" rel="noreferrer">Learn about near-Earth objects at NASA JPL (opens in a new tab)</a>
+          <a className="back-to-top" href="#overview">Back to overview ↑</a>
+        </section>
       </main>
 
       {selected && <AsteroidModal neo={selected} onClose={() => setSelected(null)} />}
