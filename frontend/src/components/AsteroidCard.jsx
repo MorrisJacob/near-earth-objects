@@ -40,6 +40,15 @@ export default function AsteroidCard({ neo, index, onClick }) {
     <div
       className={`asteroid-card${neo.is_potentially_hazardous ? ' hazardous' : ''}`}
       style={{ animationDelay: `${Math.min(index * 40, 400)}ms` }}  /* cap at 400 ms so late cards don't wait too long */
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${neo.name}`}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }}
       onClick={onClick}
     >
       <div className="card-top-line" />
@@ -79,6 +88,7 @@ export default function AsteroidCard({ neo, index, onClick }) {
         </div>
       </div>
 
+      <div className="card-details-hint">View details →</div>
       <div className="card-date">
         Close approach: <span>{neo.close_approach_date}</span>
         {neo.orbiting_body && <span style={{color:'var(--text-dim)'}}> &bull; {neo.orbiting_body}</span>}

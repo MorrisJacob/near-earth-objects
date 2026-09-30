@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 function fmt(n, decimals = 0) {
   if (n == null) return '—'
@@ -6,12 +6,36 @@ function fmt(n, decimals = 0) {
 }
 
 export default function AsteroidModal({ neo, onClose }) {
+  const modalRef = useRef(null)
+
   useEffect(() => {
     // Attach the keyboard listener only while the modal is mounted and remove
     // it on close so repeated openings do not accumulate handlers.
-    function onKey(e) { if (e.key === 'Escape') onClose() }
+    const previousFocus = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    modalRef.current.querySelector('button').focus()
+    function onKey(e) {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'Tab') {
+        const controls = modalRef.current.querySelectorAll('button, a[href]')
+        const first = controls[0]
+        const last = controls[controls.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previousOverflow
+      previousFocus?.focus()
+    }
   }, [onClose])
 
   const diamAvg = (neo.est_diameter_min_km + neo.est_diameter_max_km) / 2
@@ -28,12 +52,12 @@ export default function AsteroidModal({ neo, onClose }) {
 
   return (
     <div className="modal-backdrop" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="modal">
-        <button className="modal-close" onClick={onClose}>&times;</button>
+      <div className="modal" ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="asteroid-title">
+        <button className="modal-close" aria-label="Close asteroid details" onClick={onClose}>&times;</button>
 
         <div className="modal-header">
           <div className="modal-id">NEO ID: {neo.id}</div>
-          <div className="modal-name">{neo.name}</div>
+          <div className="modal-name" id="asteroid-title">{neo.name}</div>
           <div className="modal-badges">
             <div className={`hazard-badge ${neo.is_potentially_hazardous ? 'danger' : 'safe'}`}>
               <div className="pulse-dot" />
