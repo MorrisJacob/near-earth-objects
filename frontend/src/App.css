@@ -20,9 +20,9 @@
 
 .header-content {
   position: relative;
-  max-width: 1400px;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 32px 40px 28px;
+  padding: 32px var(--page-gutter);
 }
 
 .logo-row {
@@ -66,13 +66,15 @@
 
 /* ── STATS BAR ── */
 .stats-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
-  flex-wrap: wrap;
 }
 
 .stat-card {
-  flex: 1 1 180px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -108,20 +110,23 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: 6px;
+  margin-bottom: 12px;
+  min-height: 30px;
 }
 
 .stat-value {
+  min-height: 34px;
   font-size: 28px;
   font-weight: 800;
   color: var(--text-bright);
-  line-height: 1;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-sub {
   font-size: 11px;
   color: var(--text-dim);
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .stat-value.danger { color: var(--danger); text-shadow: 0 0 20px rgba(239,68,68,0.4); }
@@ -130,17 +135,38 @@
 
 /* ── FILTER BAR ── */
 .main {
-  max-width: 1400px;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 32px 40px 60px;
+  padding: 32px var(--page-gutter) 60px;
 }
 
 .filter-bar {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.filter-controls, .filter-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
   flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filter-actions {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .filter-group {
@@ -233,8 +259,7 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .count-badge {
-  margin-left: 8px;
-  padding: 2px 8px;
+  padding: 6px 12px;
   background: rgba(79,124,255,0.1);
   border: 1px solid rgba(79,124,255,0.2);
   border-radius: 20px;
@@ -245,12 +270,15 @@
 /* ── NEO GRID ── */
 .neo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 20px;
 }
 
 /* ── ASTEROID CARD ── */
 .asteroid-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -309,6 +337,8 @@
   color: var(--text-bright);
   line-height: 1.3;
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .hazard-badge {
@@ -358,6 +388,8 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
   margin-bottom: 6px;
 }
 
@@ -400,7 +432,7 @@
 /* Stats grid in card */
 .card-stats {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-top: 16px;
 }
@@ -433,7 +465,7 @@
 }
 
 .card-date {
-  margin-top: 14px;
+  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--border);
   font-size: 11px;
@@ -601,7 +633,7 @@
 
 .modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text-bright); }
 
-.modal-header { margin-bottom: 28px; }
+.modal-header { margin-bottom: 28px; padding-right: 36px; overflow-wrap: anywhere; }
 
 .modal-id {
   font-size: 11px;
@@ -635,7 +667,7 @@
 
 .modal-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -658,7 +690,8 @@
   font-size: 18px;
   font-weight: 800;
   color: var(--text-bright);
-  line-height: 1;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .ms-unit {
@@ -696,9 +729,7 @@
 .nasa-link:hover { background: rgba(79,124,255,0.2); }
 
 @media (max-width: 768px) {
-  .header-content { padding: 20px; }
-  .main { padding: 20px; }
-  .neo-grid { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .modal { padding: 24px; }
 }
 
@@ -735,7 +766,7 @@
   position: relative;
   flex: 1;
   width: 100%;
-  min-height: 600px;
+  min-height: clamp(360px, 65vh, 700px);
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -745,7 +776,7 @@
 .space3d-canvas {
   width: 100%;
   height: 100%;
-  min-height: 600px;
+  min-height: clamp(360px, 65vh, 700px);
   display: block;
 }
 
@@ -929,9 +960,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px 24px;
-  max-width: 1400px;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 16px 40px;
+  padding: 16px var(--page-gutter);
 }
 
 .site-nav a, .data-guide a { color: #a5b8ff; }
@@ -954,7 +985,8 @@
 }
 .filter-btn:focus-visible { outline-offset: -3px; }
 #overview, #objects, #guide { scroll-margin-top: 16px; }
-.section-intro { margin: 12px 0 24px; line-height: 1.7; }
+.main h2 { font-size: 24px; color: var(--text-bright); line-height: 1.3; }
+.section-intro { margin: 8px 0 24px; max-width: 72ch; line-height: 1.7; color: var(--text-dim); }
 .search-field {
   display: flex;
   flex-direction: column;
@@ -975,7 +1007,7 @@
 }
 .search-field input::placeholder { color: var(--text); }
 .filter-btn, .sort-select, .refresh-btn, .export-btn { min-height: 44px; }
-.card-details-hint { margin-top: 16px; color: #a5b8ff; font-size: 12px; }
+.card-details-hint { margin: 16px 0; color: #a5b8ff; font-size: 12px; }
 .data-guide {
   margin-top: 40px;
   padding: 24px;
@@ -985,14 +1017,30 @@
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
-.data-guide dt { margin-top: 20px; font-weight: 700; color: var(--text-bright); }
-.data-guide dd { margin: 6px 0 16px; }
+.data-guide dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 32px;
+  margin: 24px 0;
+}
+.data-guide dt { font-weight: 700; color: var(--text-bright); margin-bottom: 8px; }
+.data-guide dd { color: var(--text-dim); }
+.cs-value, .dlabel-value, .ms-value { font-variant-numeric: tabular-nums; }
+.card-stat { overflow-wrap: anywhere; }
+.loading-state, .error-state, .empty-state {
+  min-height: 280px;
+  padding: 48px 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
 .back-to-top { display: block; margin-top: 20px; }
 .empty-state .btn-retry { margin-top: 16px; }
 .orbit-svg { max-width: 100%; height: auto; }
 
 @media (max-width: 768px) {
-  .site-nav { padding: 12px 20px; gap: 8px 16px; }
+  .site-nav { padding: 12px var(--page-gutter); gap: 8px 16px; }
   .data-guide { padding: 20px; }
   .filter-group { max-width: 100%; }
   .filter-btn { padding: 8px 12px; letter-spacing: 0.04em; }
@@ -1001,4 +1049,35 @@
 @media (prefers-reduced-motion: reduce) {
   .logo-icon, .asteroid-card { animation: none; }
   .asteroid-card, .stat-card { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .logo-row { gap: 12px; margin-bottom: 24px; }
+  .logo-row > div:last-child { min-width: 0; }
+  .title { letter-spacing: 0.08em; }
+  .subtitle { letter-spacing: 0.04em; }
+  .filter-bar { padding: 16px; }
+  .search-field input { max-width: none; }
+  .filter-controls { align-items: stretch; }
+  .filter-group { width: 100%; }
+  .filter-btn { flex: 1; }
+  .view-toggle { margin-right: 0; }
+  .sort-select { width: 100%; }
+  .filter-actions .count-badge { width: 100%; text-align: center; }
+  .export-btn { margin-left: 0; }
+  .export-btn, .refresh-btn { flex: 1; justify-content: center; }
+  .card-header { flex-wrap: wrap; }
+  .data-guide dl { grid-template-columns: 1fr; }
+  .modal-backdrop { padding: 12px; }
+  .modal { padding: 20px; max-height: 90dvh; }
+  .modal-name { font-size: 22px; }
+  .modal-stat { padding: 12px; }
+  .modal-badges .hazard-badge { white-space: normal; }
+  .space3d-legend { top: 12px; right: 12px; padding: 10px; min-width: 0; }
+  .space3d-count { width: max-content; max-width: calc(100% - 24px); text-align: center; }
+}
+
+@media (max-width: 360px) {
+  .stats-bar { grid-template-columns: 1fr; }
+  .modal-stats-grid { grid-template-columns: 1fr; }
 }

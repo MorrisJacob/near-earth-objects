@@ -152,14 +152,22 @@ export default function App() {
         <section className="data-guide" id="guide" tabIndex={-1} aria-labelledby="guide-title">
           <h2 id="guide-title">Data guide</h2>
           <dl>
-            <dt>Finding an asteroid</dt>
-            <dd>Search by name or NEO ID, filter by classification, and sort the grid by date, distance, size, or speed. Export CSV downloads the current results. Grid view also provides keyboard access to every object's details.</dd>
-            <dt>Miss distance and LD</dt>
-            <dd>Miss distance is the predicted separation at close approach. One lunar distance (LD) is approximately 384,400 km, the average distance between Earth and the Moon.</dd>
-            <dt>Potentially hazardous</dt>
-            <dd>NASA classifies objects using their size and orbit. This label does not mean an impact is predicted. “Safe” identifies objects without that classification.</dd>
-            <dt>About the views</dt>
-            <dd>Summary totals cover the full feed; search and filters affect the results below. The 3D view is an illustration, with compressed distances and illustrative positions, not a precise orbital map.</dd>
+            <div className="guide-item">
+              <dt>Finding an asteroid</dt>
+              <dd>Search by name or NEO ID, filter by classification, and sort the grid by date, distance, size, or speed. Export CSV downloads the current results. Grid view also provides keyboard access to every object's details.</dd>
+            </div>
+            <div className="guide-item">
+              <dt>Miss distance and LD</dt>
+              <dd>Miss distance is the predicted separation at close approach. One lunar distance (LD) is approximately 384,400 km, the average distance between Earth and the Moon.</dd>
+            </div>
+            <div className="guide-item">
+              <dt>Potentially hazardous</dt>
+              <dd>NASA classifies objects using their size and orbit. This label does not mean an impact is predicted. “Safe” identifies objects without that classification.</dd>
+            </div>
+            <div className="guide-item">
+              <dt>About the views</dt>
+              <dd>Summary totals cover the full feed; search and filters affect the results below. The 3D view is an illustration, with compressed distances and illustrative positions, not a precise orbital map.</dd>
+            </div>
           </dl>
           <a href="https://cneos.jpl.nasa.gov/about/neo_groups.html" target="_blank" rel="noreferrer">Learn about near-Earth objects at NASA JPL (opens in a new tab)</a>
           <a className="back-to-top" href="#overview">Back to overview ↑</a>
