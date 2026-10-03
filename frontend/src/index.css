@@ -12,7 +12,7 @@
   --border: rgba(100, 140, 255, 0.12);
   --border-bright: rgba(130, 160, 255, 0.3);
   --text: #c8d4e8;
-  --text-dim: #6b7a96;
+  --text-dim: #94a3bd;
   --text-bright: #e8f0ff;
   --accent: #4f7cff;
   --accent2: #a855f7;
@@ -22,7 +22,10 @@
   --safe: #10b981;
   --glow-blue: rgba(79, 124, 255, 0.15);
   --glow-purple: rgba(168, 85, 247, 0.12);
-  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --content-width: 1400px;
+  --page-gutter: clamp(16px, 4vw, 40px);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
   font-size: 14px;
   color: var(--text);
   background: var(--bg);
