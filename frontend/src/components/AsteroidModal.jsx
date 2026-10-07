@@ -127,8 +127,8 @@ export default function AsteroidModal({ neo, onClose }) {
               />
 
               {/* Labels */}
-              <text x="150" y="120" textAnchor="middle" fill="#6b7a96" fontSize="8" fontFamily="monospace">EARTH</text>
-              <text x={150 + orbitR + 4} y={100 - orbitR * 0.08 - 8} fill="#c4b5fd" fontSize="7" fontFamily="monospace">
+              <text x="150" y="120" textAnchor="middle" fill="#94a3bd" fontSize="12" fontFamily="monospace">EARTH</text>
+              <text x={150 + orbitR} textAnchor="end" y={100 - orbitR * 0.08 - 8} fill="#c4b5fd" fontSize="12" fontFamily="monospace">
                 {neo.miss_distance_lunar?.toFixed(1)} LD
               </text>
             </svg>
@@ -162,15 +162,15 @@ export default function AsteroidModal({ neo, onClose }) {
           <div className="modal-stats-grid">
             <div className="modal-stat">
               <div className="ms-label">Date</div>
-              <div className="ms-value" style={{fontSize:'14px'}}>{neo.close_approach_date}</div>
+              <div className="ms-value">{neo.close_approach_date}</div>
             </div>
             <div className="modal-stat">
               <div className="ms-label">Velocity</div>
-              <div className="ms-value" style={{fontSize:'14px'}}>{fmt(neo.relative_velocity_kmh / 1000, 1)}<span className="ms-unit">K km/h</span></div>
+              <div className="ms-value">{fmt(neo.relative_velocity_kmh / 1000, 1)}<span className="ms-unit">K km/h</span></div>
             </div>
             <div className="modal-stat">
               <div className="ms-label">Miss Distance</div>
-              <div className="ms-value" style={{fontSize:'13px'}}>{fmt(neo.miss_distance_km / 1000, 0)}<span className="ms-unit">K km</span></div>
+              <div className="ms-value">{fmt(neo.miss_distance_km / 1000, 0)}<span className="ms-unit">K km</span></div>
             </div>
             <div className="modal-stat">
               <div className="ms-label">Lunar Distance</div>

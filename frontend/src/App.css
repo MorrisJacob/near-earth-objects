@@ -48,17 +48,17 @@
 .title {
   font-size: clamp(22px, 4vw, 38px);
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.06em;
   background: linear-gradient(135deg, #a5b8ff 0%, #c4b5fd 40%, #67e8f9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .subtitle {
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   color: var(--text-dim);
   text-transform: uppercase;
   margin-top: 4px;
@@ -78,7 +78,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 16px 20px;
+  padding: 20px;
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(12px);
@@ -106,28 +106,32 @@
 .stat-card.cyan::before { background: linear-gradient(90deg, transparent, var(--accent3), transparent); }
 
 .stat-label {
-  font-size: 10px;
-  letter-spacing: 0.15em;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-dim);
   margin-bottom: 12px;
-  min-height: 30px;
+  min-height: 2.8em;
 }
 
 .stat-value {
   min-height: 34px;
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 800;
   color: var(--text-bright);
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
 }
 
 .stat-sub {
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--text-dim);
   margin-top: 8px;
+  overflow-wrap: anywhere;
 }
+
+.stat-value--distance { font-size: 1.25rem; }
 
 .stat-value.danger { color: var(--danger); text-shadow: 0 0 20px rgba(239,68,68,0.4); }
 .stat-value.purple { color: #c084fc; text-shadow: 0 0 20px rgba(192,132,252,0.4); }
@@ -183,8 +187,8 @@
   border: none;
   color: var(--text-dim);
   font-family: inherit;
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
@@ -208,7 +212,7 @@
   border-radius: 8px;
   color: var(--text);
   font-family: inherit;
-  font-size: 12px;
+  font-size: 0.875rem;
   letter-spacing: 0.06em;
   cursor: pointer;
   outline: none;
@@ -224,8 +228,8 @@
   border-radius: 8px;
   color: #a5b8ff;
   font-family: inherit;
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
@@ -263,14 +267,14 @@
   background: rgba(79,124,255,0.1);
   border: 1px solid rgba(79,124,255,0.2);
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--text-dim);
 }
 
 /* ── NEO GRID ── */
 .neo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
   gap: 20px;
 }
 
@@ -327,16 +331,17 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .asteroid-name {
-  font-size: 15px;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--text-bright);
   line-height: 1.3;
-  flex: 1;
+  flex: 1 1 180px;
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -347,8 +352,8 @@
   gap: 4px;
   padding: 3px 10px;
   border-radius: 20px;
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   font-weight: 700;
   white-space: nowrap;
@@ -394,20 +399,20 @@
 }
 
 .dlabel-text {
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-dim);
 }
 
 .dlabel-value {
-  font-size: 13px;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-bright);
 }
 
 .dlabel-lunar {
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--text-dim);
   margin-left: 6px;
 }
@@ -433,33 +438,33 @@
 .card-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .card-stat {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 12px;
 }
 
 .cs-label {
-  font-size: 9px;
-  letter-spacing: 0.12em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-dim);
   margin-bottom: 4px;
 }
 
 .cs-value {
-  font-size: 13px;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-bright);
 }
 
 .cs-unit {
-  font-size: 10px;
+  font-size: 0.875rem;
   color: var(--text-dim);
   margin-left: 2px;
 }
@@ -468,7 +473,7 @@
   margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--border);
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
 }
@@ -521,8 +526,8 @@
 }
 
 .loading-text {
-  font-size: 13px;
-  letter-spacing: 0.1em;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
   color: var(--text-dim);
   text-transform: uppercase;
   animation: blink 1.5s ease-in-out infinite;
@@ -563,8 +568,8 @@
   border-radius: 8px;
   color: #a5b8ff;
   font-family: inherit;
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
@@ -622,7 +627,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text-dim);
-  font-size: 18px;
+  font-size: 1.125rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -636,15 +641,15 @@
 .modal-header { margin-bottom: 28px; padding-right: 36px; overflow-wrap: anywhere; }
 
 .modal-id {
-  font-size: 11px;
-  letter-spacing: 0.15em;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-dim);
   margin-bottom: 6px;
 }
 
 .modal-name {
-  font-size: 26px;
+  font-size: 1.625rem;
   font-weight: 800;
   color: var(--text-bright);
   line-height: 1.2;
@@ -653,11 +658,11 @@
 
 .modal-badges { display: flex; gap: 8px; flex-wrap: wrap; }
 
-.modal-section { margin-bottom: 24px; }
+.modal-section { margin-bottom: 32px; }
 
 .modal-section-title {
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-dim);
   margin-bottom: 12px;
@@ -679,15 +684,15 @@
 }
 
 .ms-label {
-  font-size: 9px;
-  letter-spacing: 0.15em;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-dim);
   margin-bottom: 6px;
 }
 
 .ms-value {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 800;
   color: var(--text-bright);
   line-height: 1.4;
@@ -695,7 +700,7 @@
 }
 
 .ms-unit {
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--text-dim);
   margin-left: 3px;
 }
@@ -720,8 +725,8 @@
   border-radius: 8px;
   color: #a5b8ff;
   text-decoration: none;
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   transition: all 0.2s;
 }
@@ -796,14 +801,12 @@
 }
 
 .stt-name {
-  font-size: 13px;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-bright);
   margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px;
+  overflow-wrap: anywhere;
+  max-width: 240px;
 }
 
 .stt-row {
@@ -812,14 +815,14 @@
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 6px;
-  font-size: 12px;
+  font-size: 0.875rem;
   color: var(--text);
 }
 
 .stt-badge {
-  font-size: 9px;
+  font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   padding: 2px 7px;
   border-radius: 12px;
 }
@@ -837,7 +840,7 @@
 }
 
 .stt-speed {
-  font-size: 12px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: #fbbf24;
   letter-spacing: 0.04em;
@@ -845,7 +848,7 @@
 }
 
 .stt-hint {
-  font-size: 10px;
+  font-size: 0.875rem;
   color: var(--text-dim);
   letter-spacing: 0.06em;
 }
@@ -865,8 +868,8 @@
 }
 
 .legend-title {
-  font-size: 9px;
-  letter-spacing: 0.2em;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-dim);
   margin-bottom: 10px;
@@ -877,7 +880,7 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 6px;
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--text-dim);
 }
 
@@ -930,10 +933,9 @@
 }
 
 .legend-hint {
-  font-size: 9px;
+  font-size: 0.875rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
-  opacity: 0.7;
 }
 
 .legend-hint--touch { display: none; }
@@ -949,8 +951,8 @@
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-dim);
   background: rgba(6,10,24,0.7);
@@ -992,20 +994,20 @@
 }
 .filter-btn:focus-visible { outline-offset: -3px; }
 #overview, #objects, #guide { scroll-margin-top: 16px; }
-.main h2 { font-size: 24px; color: var(--text-bright); line-height: 1.3; }
+.main h2 { font-size: 1.5rem; color: var(--text-bright); line-height: 1.3; }
 .section-intro { margin: 8px 0 24px; max-width: 72ch; line-height: 1.7; color: var(--text-dim); }
 .search-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  font-size: 12px;
+  font-size: 0.875rem;
 }
 .search-field input {
   width: 100%;
   max-width: 440px;
   min-height: 44px;
-  padding: 10px 12px;
+  padding: 12px;
   border: 1px solid var(--border-bright);
   border-radius: 8px;
   font: inherit;
@@ -1014,7 +1016,7 @@
 }
 .search-field input::placeholder { color: var(--text); }
 .filter-btn, .sort-select, .refresh-btn, .export-btn { min-height: 44px; }
-.card-details-hint { margin: 16px 0; color: #a5b8ff; font-size: 12px; }
+.card-details-hint { margin: 16px 0; color: #a5b8ff; font-size: 0.875rem; }
 .data-guide {
   margin-top: 40px;
   padding: 24px;
@@ -1031,7 +1033,7 @@
   margin: 24px 0;
 }
 .data-guide dt { font-weight: 700; color: var(--text-bright); margin-bottom: 8px; }
-.data-guide dd { color: var(--text-dim); }
+.data-guide dd { color: var(--text-dim); max-width: 65ch; }
 .cs-value, .dlabel-value, .ms-value { font-variant-numeric: tabular-nums; }
 .card-stat { overflow-wrap: anywhere; }
 .loading-state, .error-state, .empty-state {
@@ -1065,12 +1067,12 @@
   .logo-row { gap: 12px; margin-bottom: 24px; }
   .logo-icon { width: 40px; height: 40px; }
   .logo-row > div:last-child { min-width: 0; }
-  .title { letter-spacing: 0.08em; }
+  .title { letter-spacing: 0.04em; }
   .subtitle { letter-spacing: 0.04em; }
   .stats-bar { gap: 10px; }
-  .stat-card { padding: 12px; }
-  .stat-label { letter-spacing: 0.08em; overflow-wrap: anywhere; }
-  .stat-value { font-size: 24px; overflow-wrap: anywhere; }
+  .stat-card { padding: 16px; }
+  .stat-label { letter-spacing: 0.04em; overflow-wrap: anywhere; }
+  .stat-value { font-size: 1.5rem; overflow-wrap: anywhere; }
   .filter-bar { padding: 16px; }
   /* Keep iOS from zooming the page when a form control receives focus. */
   .search-field input { max-width: none; font-size: 16px; }
@@ -1090,7 +1092,7 @@
   .modal { padding: 20px; max-height: 90dvh; }
   .modal-close { top: 12px; right: 12px; width: 44px; height: 44px; }
   .modal-header { padding-right: 44px; }
-  .modal-name { font-size: 22px; }
+  .modal-name { font-size: 1.375rem; }
   .modal-stat { padding: 12px; }
   .modal-badges .hazard-badge { white-space: normal; }
   .nasa-link { min-height: 44px; width: 100%; justify-content: center; letter-spacing: 0.04em; }
@@ -1120,8 +1122,14 @@
 }
 
 @media (max-width: 360px) {
-  .stats-bar { grid-template-columns: 1fr; }
-  .modal-stats-grid { grid-template-columns: 1fr; }
+  .card-stats { grid-template-columns: 1fr; }
   .filter-actions { flex-direction: column; align-items: stretch; }
   .space3d-legend { grid-template-columns: 1fr; }
+}
+
+/* Stack dense data panels before their labels and values become cramped. */
+@media (max-width: 480px) {
+  .stats-bar, .modal-stats-grid { grid-template-columns: 1fr; }
+  .stat-label { min-height: 0; margin-bottom: 8px; }
+  .title { font-size: 1.5rem; }
 }
