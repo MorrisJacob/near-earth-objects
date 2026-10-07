@@ -936,6 +936,13 @@
   opacity: 0.7;
 }
 
+.legend-hint--touch { display: none; }
+
+@media (pointer: coarse) {
+  .legend-hint--mouse { display: none; }
+  .legend-hint--touch { display: block; }
+}
+
 /* ── OBJECT COUNT BADGE ── */
 .space3d-count {
   position: absolute;
@@ -1052,32 +1059,69 @@
 }
 
 @media (max-width: 600px) {
+  .header-content { padding-block: 20px; }
+  .main { padding-top: 24px; padding-bottom: 32px; }
+  .site-nav a { min-height: 44px; display: inline-flex; align-items: center; }
   .logo-row { gap: 12px; margin-bottom: 24px; }
+  .logo-icon { width: 40px; height: 40px; }
   .logo-row > div:last-child { min-width: 0; }
   .title { letter-spacing: 0.08em; }
   .subtitle { letter-spacing: 0.04em; }
+  .stats-bar { gap: 10px; }
+  .stat-card { padding: 12px; }
+  .stat-label { letter-spacing: 0.08em; overflow-wrap: anywhere; }
+  .stat-value { font-size: 24px; overflow-wrap: anywhere; }
   .filter-bar { padding: 16px; }
-  .search-field input { max-width: none; }
+  /* Keep iOS from zooming the page when a form control receives focus. */
+  .search-field input { max-width: none; font-size: 16px; }
   .filter-controls { align-items: stretch; }
   .filter-group { width: 100%; }
-  .filter-btn { flex: 1; }
+  .filter-btn { flex: 1; min-width: 0; overflow-wrap: anywhere; }
   .view-toggle { margin-right: 0; }
-  .sort-select { width: 100%; }
+  .sort-select { width: 100%; min-width: 0; font-size: 16px; }
   .filter-actions .count-badge { width: 100%; text-align: center; }
   .export-btn { margin-left: 0; }
   .export-btn, .refresh-btn { flex: 1; justify-content: center; }
+  .neo-grid { gap: 16px; }
+  .asteroid-card { padding: 16px; }
   .card-header { flex-wrap: wrap; }
   .data-guide dl { grid-template-columns: 1fr; }
   .modal-backdrop { padding: 12px; }
   .modal { padding: 20px; max-height: 90dvh; }
+  .modal-close { top: 12px; right: 12px; width: 44px; height: 44px; }
+  .modal-header { padding-right: 44px; }
   .modal-name { font-size: 22px; }
   .modal-stat { padding: 12px; }
   .modal-badges .hazard-badge { white-space: normal; }
-  .space3d-legend { top: 12px; right: 12px; padding: 10px; min-width: 0; }
-  .space3d-count { width: max-content; max-width: calc(100% - 24px); text-align: center; }
+  .nasa-link { min-height: 44px; width: 100%; justify-content: center; letter-spacing: 0.04em; }
+  .btn-retry { min-height: 44px; }
+  /* Put the legend below the scene so it cannot obscure objects on phones. */
+  .space3d-wrapper { flex: none; min-height: 0; }
+  .space3d-canvas { height: clamp(280px, 55svh, 480px); min-height: 0; }
+  .space3d-legend {
+    position: static;
+    margin: 12px;
+    padding: 12px;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 12px;
+  }
+  .legend-title, .legend-divider, .legend-hint { grid-column: 1 / -1; }
+  .legend-row { margin-bottom: 0; overflow-wrap: anywhere; }
+  .space3d-count {
+    position: static;
+    transform: none;
+    width: fit-content;
+    max-width: calc(100% - 24px);
+    margin: 12px auto;
+    text-align: center;
+  }
 }
 
 @media (max-width: 360px) {
   .stats-bar { grid-template-columns: 1fr; }
   .modal-stats-grid { grid-template-columns: 1fr; }
+  .filter-actions { flex-direction: column; align-items: stretch; }
+  .space3d-legend { grid-template-columns: 1fr; }
 }

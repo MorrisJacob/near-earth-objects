@@ -166,7 +166,12 @@ describe('SpaceView3D', () => {
 
   it('shows drag/zoom hint in legend', () => {
     render(<SpaceView3D neos={sampleNEOs} onSelect={vi.fn()} />)
-    expect(screen.getByText(/drag to rotate/i)).toBeInTheDocument()
+    expect(screen.getByText(/scroll to zoom/i)).toBeInTheDocument()
+  })
+
+  it('provides rotation, zoom, and selection instructions for touch screens', () => {
+    render(<SpaceView3D neos={sampleNEOs} onSelect={vi.fn()} />)
+    expect(screen.getByText(/pinch to zoom/i)).toHaveTextContent('Drag to rotate • Pinch to zoom • Tap an asteroid for details')
   })
 
   it('does not render tooltip by default', () => {

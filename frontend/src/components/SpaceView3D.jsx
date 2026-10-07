@@ -510,7 +510,8 @@ export default function SpaceView3D({ neos, onSelect }) {
           <span style={{ paddingLeft: '20px' }}>Arrow length = speed</span>
         </div>
         <div className="legend-divider" />
-        <div className="legend-hint">Drag to rotate &bull; Scroll to zoom</div>
+        <div className="legend-hint legend-hint--mouse">Drag to rotate &bull; Scroll to zoom</div>
+        <div className="legend-hint legend-hint--touch">Drag to rotate &bull; Pinch to zoom &bull; Tap an asteroid for details</div>
       </div>
 
       <div className="space3d-count">{neos.length} objects displayed</div>
