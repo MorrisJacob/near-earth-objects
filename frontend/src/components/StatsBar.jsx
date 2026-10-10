@@ -29,10 +29,10 @@ export default function StatsBar({ total, hazardous, closest, loading }) {
 
       <div className="stat-card cyan">
         <div className="stat-label">Closest Approach</div>
-        <div className="stat-value cyan" style={{fontSize: closest ? '18px' : '28px'}}>
+        <div className={`stat-value cyan${closest ? ' stat-value--distance' : ''}`}>
           {loading ? '—' : closest ? fmtDist(closest.miss_distance_km) : '—'}
         </div>
-        <div className="stat-sub" style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>
+        <div className="stat-sub">
           {closest ? closest.name.replace(/[()]/g,'') : ''}
         </div>
       </div>

@@ -506,7 +506,7 @@ export default function SpaceView3D({ neos, onSelect }) {
           <div className="legend-arrow-icon" />
           <span>Direction of travel</span>
         </div>
-        <div className="legend-row" style={{ opacity: 0.6, fontSize: '10px' }}>
+        <div className="legend-row">
           <span style={{ paddingLeft: '20px' }}>Arrow length = speed</span>
         </div>
         <div className="legend-divider" />

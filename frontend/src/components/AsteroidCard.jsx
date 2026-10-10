@@ -84,7 +84,7 @@ export default function AsteroidCard({ neo, index, onClick }) {
         </div>
         <div className="card-stat">
           <div className="cs-label">Speed</div>
-          <div className="cs-value" style={{fontSize: '11px'}}>{speedStr}</div>
+          <div className="cs-value">{speedStr}</div>
         </div>
       </div>
 
