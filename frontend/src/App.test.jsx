@@ -70,6 +70,25 @@ it('opens details by keyboard, traps focus, and restores focus on close', async 
   expect(screen.getByRole('dialog')).toBeInTheDocument()
 })
 
+it('searches dates and multiple fields, reports result totals, and clears only search', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  await screen.findByRole('button', { name: 'View details for Alpha' })
+  const search = screen.getByRole('searchbox', { name: 'Search asteroids' })
+  await user.type(search, '2026-09-27 beta')
+  expect(screen.getByRole('button', { name: 'View details for Beta' })).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: 'View details for Alpha' })).not.toBeInTheDocument()
+  expect(screen.getByText('1 of 2 objects')).toBeInTheDocument()
+  await user.click(screen.getByRole('button', { name: 'Hazardous' }))
+  expect(screen.getByText('0 of 2 objects')).toBeInTheDocument()
+  await user.click(screen.getByRole('button', { name: 'Clear search' }))
+  expect(search).toHaveValue('')
+  expect(search).toHaveFocus()
+  expect(screen.getByRole('button', { name: 'Hazardous' })).toHaveAttribute('aria-pressed', 'true')
+  expect(screen.getByRole('button', { name: 'View details for Alpha' })).toBeInTheDocument()
+  expect(fetch).toHaveBeenCalledOnce()
+})
+
 it('shows a feed empty state without suggesting a filter caused it', async () => {
   fetch.mockResolvedValue({ ok: true, json: async () => ({ neos: [], total_objects: 0 }) })
   render(<App />)
