@@ -1,10 +1,18 @@
-export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefresh, onExport, loading, count, view, setView, query = '', setQuery }) {
+import { useRef } from 'react'
+
+export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefresh, onExport, loading, count, total, error = false, view, setView, query = '', setQuery }) {
+  const searchInput = useRef(null)
+  const narrowed = query.trim() || filter !== 'all'
   return (
     <div className="filter-bar">
-      <label className="search-field">
-        Search asteroids
-        <input type="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="Name or NEO ID" />
-      </label>
+      <div className="search-field">
+        <label htmlFor="asteroid-search">Search asteroids</label>
+        <div className="search-controls">
+          <input id="asteroid-search" ref={searchInput} type="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="Name, NEO ID, or YYYY-MM-DD" aria-describedby="search-help" />
+          {query && <button className="btn-retry" onClick={() => { setQuery(''); searchInput.current.focus() }}>Clear search</button>}
+        </div>
+        <p id="search-help">Search the current 7-day feed. Combine words, IDs, or dates to narrow results.</p>
+      </div>
       <div className="filter-controls">
         {/* View toggle */}
         <div className="filter-group view-toggle" role="group" aria-label="View">
@@ -67,7 +75,7 @@ export default function FilterBar({ filter, setFilter, sortBy, setSortBy, onRefr
       </div>
 
       <div className="filter-actions">
-        <span className="count-badge" role="status">{loading ? 'Loading objects…' : `${count} objects`}</span>
+        <span className="count-badge" role="status" aria-atomic="true">{loading ? 'Loading objects…' : error ? 'Objects unavailable' : narrowed && total !== undefined ? `${count} of ${total} objects` : `${count} objects`}</span>
 
         <button className="export-btn" onClick={onExport} disabled={loading || count === 0}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
