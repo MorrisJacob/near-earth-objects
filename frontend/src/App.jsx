@@ -6,6 +6,7 @@ import FilterBar from './components/FilterBar'
 import AsteroidModal from './components/AsteroidModal'
 import SpaceView3D from './components/SpaceView3D'
 import { downloadObjectsCsv } from './utils/csv'
+import { matchesSearch } from './utils/search'
 import './App.css'
 
 // In production VITE_API_BASE is set to the Railway backend URL via GitHub
@@ -48,12 +49,12 @@ export default function App() {
     let list = [...neos]
     if (filter === 'hazardous') list = list.filter(n => n.is_potentially_hazardous)
     if (filter === 'safe') list = list.filter(n => !n.is_potentially_hazardous)
+    list = list.filter(n => matchesSearch(n, query))
     if (sortBy === 'date') list.sort((a, b) => a.close_approach_date.localeCompare(b.close_approach_date))
     if (sortBy === 'distance') list.sort((a, b) => a.miss_distance_km - b.miss_distance_km)
     if (sortBy === 'size') list.sort((a, b) => b.est_diameter_max_km - a.est_diameter_max_km)
     if (sortBy === 'speed') list.sort((a, b) => b.relative_velocity_kmh - a.relative_velocity_kmh)
-    const search = query.trim().toLowerCase()
-    return list.filter(n => n.name.toLowerCase().includes(search) || String(n.id).includes(search))
+    return list
   }, [neos, filter, sortBy, query])
 
   // Summary statistics intentionally use the complete feed, not the filtered
@@ -105,6 +106,7 @@ export default function App() {
           sortBy={sortBy} setSortBy={setSortBy}
           onRefresh={fetchNEOs} loading={loading}
           count={error ? 0 : filtered.length}
+          total={neos.length} error={Boolean(error)}
           query={query} setQuery={setQuery}
           view={view} setView={setView}
           onExport={() => downloadObjectsCsv(filtered)}
@@ -154,7 +156,7 @@ export default function App() {
           <dl>
             <div className="guide-item">
               <dt>Finding an asteroid</dt>
-              <dd>Search by name or NEO ID, filter by classification, and sort the grid by date, distance, size, or speed. Export CSV downloads the current results. Grid view also provides keyboard access to every object's details.</dd>
+              <dd>Search by name, NEO ID, or close-approach date (YYYY-MM-DD). Combine search terms in any order to narrow results, then filter by classification and sort by date, distance, size, or speed. Search covers the current 7-day feed. Export CSV downloads the current results. Grid view also provides keyboard access to every object's details.</dd>
             </div>
             <div className="guide-item">
               <dt>Miss distance and LD</dt>
